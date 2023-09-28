@@ -16,7 +16,7 @@
 #include "scr_archery_game.h"
 
 #define MAX_NUM_ARROW       (5)
-#define MAX_AXIS_X_ARROW    (120)
+#define MAX_AXIS_X_ARROW    (128)
 #define SIZE_BITMAP_ARROW_X (10)
 #define SIZE_BITMAP_ARROW_Y (5)
 
