@@ -17,7 +17,7 @@
 #include "scr_archery_game.h"
 
 #define AXIS_X_BORDER           (15)
-#define AXIS_Y_BORDER_ON        (2)
+#define AXIS_Y_BORDER_ON        (1)
 #define AXIS_Y_BORDER_UNDER     (52)
 
 typedef struct {

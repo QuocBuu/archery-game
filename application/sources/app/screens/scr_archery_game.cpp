@@ -14,21 +14,21 @@ ar_game_setting_t settingsetup;
 void ar_game_frame_display() {
 	view_render.setTextSize(1);
 	view_render.setTextColor(WHITE);
-	view_render.setCursor(2,55);
+	view_render.setCursor(5,55);
 	view_render.print("Arrow:");
 	view_render.print(settingsetup.num_arrow);
 	view_render.setCursor(60,55);
 	view_render.print(" Score:");
 	view_render.print(ar_game_score);
 	view_render.drawLine(0, LCD_HEIGHT, 	LCD_WIDTH, LCD_HEIGHT,		WHITE);
-	view_render.drawLine(0, LCD_HEIGHT-10, 	LCD_WIDTH, LCD_HEIGHT-10,	WHITE);
+	view_render.drawLine(0, LCD_HEIGHT-11, 	LCD_WIDTH, LCD_HEIGHT-11,	WHITE);
 	view_render.drawRect(0, 0, 128, 64, 1);
 }
 
 void ar_game_archery_display() {
 	if (archery.visible == WHITE && settingsetup.num_arrow != 0) {
 		view_render.drawBitmap(	archery.x, \
-								archery.y - 10, \
+								archery.y - 11, \
 								bitmap_archery_I, \
 								SIZE_BITMAP_ARCHERY_X, \
 								SIZE_BITMAP_ARCHERY_Y, \
@@ -36,7 +36,7 @@ void ar_game_archery_display() {
 	}
 	else if (archery.visible == WHITE && settingsetup.num_arrow == 0) {
 		view_render.drawBitmap(	archery.x, \
-								archery.y - 10, \
+								archery.y - 11, \
 								bitmap_archery_II, \
 								SIZE_BITMAP_ARCHERY_X, \
 								SIZE_BITMAP_ARCHERY_Y, \
@@ -48,7 +48,7 @@ void ar_game_arrow_display() {
 	for (uint8_t i = 0; i < MAX_NUM_ARROW; i++) {
 		if (arrow[i].visible == WHITE) {
 			view_render.drawBitmap(	arrow[i].x, \
-									arrow[i].y, \
+									arrow[i].y-1, \
 									bitmap_arrow, \
 									SIZE_BITMAP_ARROW_X, \
 									SIZE_BITMAP_ARROW_Y, \
@@ -127,7 +127,7 @@ void ar_game_border_display() {
 									WHITE);
 		for (uint8_t i = 0; i < NUM_METEOROIDS; i++) {
 			view_render.fillCircle(	border.x, \
-									meteoroid[i].y + 5, \
+									meteoroid[i].y + 4, \
 									1, \
 									WHITE);
 		}
