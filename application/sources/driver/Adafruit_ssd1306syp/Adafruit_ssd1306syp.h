@@ -4,7 +4,18 @@
 #include <stdlib.h>
 #include "Adafruit_GFX.h"
 
-#define SH1106_DRIVER_EN
+// Select OLED controller by enabling exactly one define below.
+// #define SH1106_DRIVER_EN
+// #define SSD1306_DRIVER_EN
+#define SSD1309_DRIVER_EN
+
+#if (defined(SH1106_DRIVER_EN) + defined(SSD1306_DRIVER_EN) + defined(SSD1309_DRIVER_EN)) > 1
+#error "Only one OLED controller can be enabled: SH1106/SSD1306/SSD1309"
+#endif
+
+#if !defined(SH1106_DRIVER_EN) && !defined(SSD1306_DRIVER_EN) && !defined(SSD1309_DRIVER_EN)
+#define SSD1306_DRIVER_EN
+#endif
 
 #if defined (SH1106_DRIVER_EN)
 #define SH1106_CMD
@@ -45,11 +56,13 @@
 
 #define SH1106_EXTERNALVCC 0x1
 #define SH1106_SWITCHCAPVCC 0x2
-#else
+#elif defined (SSD1306_DRIVER_EN) || defined (SSD1309_DRIVER_EN)
 #define SSD1306_CMD
 
 #define SSD1306_CMD_DISPLAY_OFF 0xAE//--turn off the OLED
 #define SSD1306_CMD_DISPLAY_ON 0xAF//--turn on oled panel
+#else
+#error "No supported OLED controller selected"
 #endif
 
 #define BLACK 0
@@ -60,6 +73,14 @@
 #define HEIGHT 64
 #define FBSIZE 1024 //128x8
 #define MAXROW 8
+
+#ifndef OLED_COL_OFFSET
+#if defined (SH1106_DRIVER_EN)
+#define OLED_COL_OFFSET 2
+#else
+#define OLED_COL_OFFSET 0
+#endif
+#endif
 
 class Adafruit_ssd1306syp : public Adafruit_GFX{
 public:

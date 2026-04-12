@@ -62,6 +62,33 @@ bool Adafruit_ssd1306syp::initialize()
 	writeCommand(SH1106_DISPLAYON);//--turn on oled panel
 #else
 	writeCommand(SSD1306_CMD_DISPLAY_OFF);//display off
+	#if defined (SSD1309_DRIVER_EN)
+	writeCommand(0x20);//Set Memory Addressing Mode
+	writeCommand(0x00);//Horizontal Addressing Mode
+	writeCommand(0xB0);//Set Page Start Address for Page Addressing Mode,0-7
+	writeCommand(0xC8);//Set COM Output Scan Direction
+	writeCommand(0x00);//---set low column address
+	writeCommand(0x10);//---set high column address
+	writeCommand(0x40);//--set start line address
+	writeCommand(0x81);//--set contrast control register
+	writeCommand(0x7F);
+	writeCommand(0xA1);//--set segment re-map 0 to 127
+	writeCommand(0xA6);//--set normal display
+	writeCommand(0xA8);//--set multiplex ratio(1 to 64)
+	writeCommand(0x3F);
+	writeCommand(0xD3);//--set display offset
+	writeCommand(0x00);
+	writeCommand(0xD5);//--set display clock divide ratio/oscillator frequency
+	writeCommand(0x80);
+	writeCommand(0xD9);//--set pre-charge period
+	writeCommand(0x22);
+	writeCommand(0xDA);//--set com pins hardware configuration
+	writeCommand(0x12);
+	writeCommand(0xDB);//--set vcomh
+	writeCommand(0x20);
+	writeCommand(0x8D);//--set DC-DC enable
+	writeCommand(0x14);
+	#else
 	writeCommand(0x00);//Set Memory Addressing Mode
 	writeCommand(0x10);//00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
 	writeCommand(0x40);//Set Page Start Address for Page Addressing Mode,0-7
@@ -86,6 +113,7 @@ bool Adafruit_ssd1306syp::initialize()
 	writeCommand(0x8D);//--set vcomh
 	writeCommand(0x14);//0x20,0.77xVcc
 	writeCommand(0xAF);//--set DC-DC enable
+	#endif
 
 	writeCommand(SSD1306_CMD_DISPLAY_ON);//--turn on oled panel
 
@@ -247,12 +275,28 @@ void Adafruit_ssd1306syp::update()
 #else
 #if 1
 	unsigned int  i=0;
+	#if defined (SSD1309_DRIVER_EN)
+	writeCommand(0x21);//COLUMNADDR
+	writeCommand(0x00 + OLED_COL_OFFSET);//column start
+	writeCommand(0x7F + OLED_COL_OFFSET);//column end
+	writeCommand(0x22);//PAGEADDR
+	writeCommand(0x00);//page start
+	writeCommand(0x07);//page end
+
+	startDataSequence();
+	for(i=0;i<FBSIZE;i++)
+	{
+		writeByte(m_pFramebuffer[i]);
+	}
+	stopIIC();
+	#else
 	unsigned int m,n;
+	unsigned char start_col = OLED_COL_OFFSET;
 	for(m=0;m<8;m++)
 	{
 		writeCommand(0xb0+m);	//page0-page1
-		writeCommand(0x00);		//low column start address
-		writeCommand(0x10);		//high column start address
+		writeCommand(start_col & 0x0f);		//low column start address
+		writeCommand(0x10 | ((start_col >> 4) & 0x0f));		//high column start address
 
 		startDataSequence();
 		for(n=0;n<128;n++)
@@ -261,6 +305,7 @@ void Adafruit_ssd1306syp::update()
 		}
 		stopIIC();
 	}
+	#endif
 #else
 	updateRow(0,SSD1306_MAXROW);
 #endif
@@ -272,18 +317,31 @@ void Adafruit_ssd1306syp::updateRow(int rowID)
 {
 	unsigned char x = 0;
 	unsigned int  index = 0;
+	#if defined (SSD1309_DRIVER_EN)
+	unsigned int x_end = (WIDTH - 1) + OLED_COL_OFFSET;
+	#endif
+	unsigned char start_col = OLED_COL_OFFSET;
 	if(rowID>=0 && rowID<MAXROW && m_pFramebuffer)
 	{//this part is faster than else.
+		#if defined (SSD1309_DRIVER_EN)
+		writeCommand(0x21);//COLUMNADDR
+		writeCommand(start_col);//column start
+		writeCommand((unsigned char)x_end);//column end
+		writeCommand(0x22);//PAGEADDR
+		writeCommand((unsigned char)rowID);//page start
+		writeCommand((unsigned char)rowID);//page end
+		#else
 		//set the position
 		startIIC();
 		writeByte(0x78);  //Slave address,SA0=0
 		writeByte(0x00);	//write command
 
 		writeByte(0xb0+rowID);
-		writeByte(((x&0xf0)>>4)|0x10);//|0x10
-		writeByte((x&0x0f)|0x01);//|0x01
+		writeByte(0x10 | ((start_col >> 4) & 0x0f));
+		writeByte(start_col & 0x0f);
 
 		stopIIC();
+		#endif
 
 		//start painting the buffer.
 		startDataSequence();
