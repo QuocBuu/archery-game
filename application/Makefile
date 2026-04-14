@@ -102,7 +102,12 @@ CPU = -mthumb -march=armv7-m
 FPU = -mfloat-abi=soft
 
 # Interface option
-IF_OPTION +=	$(IF_LINK_OPTION)		\
+IF_OPTION +=	$(IF_LINK_OPTION)
+
+# Hardware option (SH1106 (V2.1), SSD1309 (V3.0))
+HARDWARE_OPTION += \
+		-DSH1106_DRIVER_EN 
+# 		-DSSD1309_DRIVER_EN
 
 # Console log compile option
 CONSOLE_OPTION +=			\
@@ -124,6 +129,7 @@ GENERAL_FLAGS +=			\
 		$(APP_ADDR_OPTION)	\
 		$(USB_OPTION)		\
 		$(IF_OPTION)		\
+		$(HARDWARE_OPTION)  \
 		-DUSE_STDPERIPH_DRIVER	\
 		-DSTM32L1XX_MD		\
 		-DSTM32L_PLATFORM	\
@@ -208,14 +214,6 @@ ifdef dev
 	ak-flash $(dev) $(TARGET:.axf=.bin) $(APP_START_ADDR_VAL)
 else
 	$(PROGRAMER_PATH)/STM32_Programmer.sh -c port=SWD -w $(TARGET:.axf=.bin) $(APP_START_ADDR_VAL) -rst
-endif
-
-.PHONY: factory
-factory:
-ifdef dev
-	ak-flash $(dev) ../resources/bin/ak-base-kit-stm32l151-application.bin $(APP_START_ADDR_VAL)
-else
-	$(PROGRAMER_PATH)/STM32_Programmer.sh -c port=SWD -w ../resources/bin/ak-base-kit-stm32l151-application.bin $(APP_START_ADDR_VAL) -rst
 endif
 
 .PHONY: com

@@ -25,9 +25,6 @@ extern "C"
  * define pin for arduino pinMode/digitalWrite/digitalRead
  * NOTE: define value MUST be deferrent
  */
-#define SSD1306_CLK_PIN					(0x03)
-#define SSD1306_DATA_PIN				(0x04)
-#define SSD1306_RES_PIN					(0x08)
 
 /******************************************************************************
  *Pin map button
@@ -82,19 +79,23 @@ extern "C"
 #define BAT_ADC_IO_CLOCK				(RCC_AHBPeriph_GPIOA)
 
 /****************************************************************************
- *Pin map ssd1306
+ *Pin map Oled
 *****************************************************************************/
-#define SSD1306_CLK_IO_PIN				(GPIO_Pin_13)
-#define SSD1306_CLK_IO_PORT				(GPIOB)
-#define SSD1306_CLK_IO_CLOCK			(RCC_AHBPeriph_GPIOB)
+#define OLED_CLK_PIN					(0x03)
+#define OLED_DATA_PIN				    (0x04)
+#define OLED_RES_PIN					(0x08)
 
-#define SSD1306_DATA_IO_PIN				(GPIO_Pin_12)
-#define SSD1306_DATA_IO_PORT			(GPIOB)
-#define SSD1306_DATA_IO_CLOCK			(RCC_AHBPeriph_GPIOB)
+#define OLED_CLK_IO_PIN				    (GPIO_Pin_13)
+#define OLED_CLK_IO_PORT				(GPIOB)
+#define OLED_CLK_IO_CLOCK			    (RCC_AHBPeriph_GPIOB)
 
-#define SSD1306_RES_IO_PIN				(GPIO_Pin_15)
-#define SSD1306_RES_IO_PORT				(GPIOB)
-#define SSD1306_RES_IO_CLOCK			(RCC_AHBPeriph_GPIOB)
+#define OLED_DATA_IO_PIN				(GPIO_Pin_12)
+#define OLED_DATA_IO_PORT				(GPIOB)
+#define OLED_DATA_IO_CLOCK			    (RCC_AHBPeriph_GPIOB)
+
+#define OLED_RES_IO_PIN				    (GPIO_Pin_15)
+#define OLED_RES_IO_PORT				(GPIOB)
+#define OLED_RES_IO_CLOCK			    (RCC_AHBPeriph_GPIOB)
 
 /****************************************************************************
  *Pin map UART2
@@ -179,25 +180,25 @@ extern void adc_bat_io_cfg();
 extern uint16_t adc_bat_io_read(uint8_t);
 
 /******************************************************************************
-* ssd1306 oled IO function
+* OLED IO function
 *******************************************************************************/
-extern void ssd1306_clk_input_mode();
-extern void ssd1306_clk_output_mode();
-extern void ssd1306_clk_digital_write_low();
-extern void ssd1306_clk_digital_write_high();
-extern int  ssd1306_clk_digital_read();
+extern void oled_clk_input_mode();
+extern void oled_clk_output_mode();
+extern void oled_clk_digital_write_low();
+extern void oled_clk_digital_write_high();
+extern int  oled_clk_digital_read();
 
-extern void ssd1306_data_input_mode();
-extern void ssd1306_data_output_mode();
-extern void ssd1306_data_digital_write_low();
-extern void ssd1306_data_digital_write_high();
-extern int  ssd1306_data_digital_read();
+extern void oled_data_input_mode();
+extern void oled_data_output_mode();
+extern void oled_data_digital_write_low();
+extern void oled_data_digital_write_high();
+extern int  oled_data_digital_read();
 
-extern void ssd1306_res_input_mode();
-extern void ssd1306_res_output_mode();
-extern void ssd1306_res_digital_write_low();
-extern void ssd1306_res_digital_write_high();
-extern int  ssd1306_res_digital_read();
+extern void oled_res_input_mode();
+extern void oled_res_output_mode();
+extern void oled_res_digital_write_low();
+extern void oled_res_digital_write_high();
+extern int  oled_res_digital_read();
 
 /******************************************************************************
 * eeprom function

@@ -38,8 +38,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 using namespace std;
 #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
-// MOON and star
-void Adafruit_GFX::drawMoon(int16_t x0, int16_t y0, int16_t r, 
+
+void Adafruit_GFX::drawMoon(int16_t x0, int16_t y0, int16_t r,
                             uint16_t color) {
     int32_t tepm1, tepm2;
     int16_t xr1 = x0 + 3*r/4;
@@ -66,8 +66,8 @@ void Adafruit_GFX::drawMoon(int16_t x0, int16_t y0, int16_t r,
     drawLine(x1 + 3*r/4, y1 + 3*r/8, x1 + r,     y1 +3*r/8, color);
 
 }
-// Sun
-void Adafruit_GFX::drawSun(int16_t x0, int16_t y0, int16_t r, 
+
+void Adafruit_GFX::drawSun(int16_t x0, int16_t y0, int16_t r,
                             uint16_t color) {
 
     int16_t xr = x0 + r/2;
@@ -97,7 +97,7 @@ Adafruit_GFX::Adafruit_GFX(int16_t w, int16_t h):
   wrap      = true;
 }
 
-// Draw a circle outline : Hinh_Tron
+// Draw a circle outline
 void Adafruit_GFX::drawCircle(int16_t x0, int16_t y0, int16_t r,
     uint16_t color) {
   int16_t f = 1 - r;
@@ -131,7 +131,7 @@ void Adafruit_GFX::drawCircle(int16_t x0, int16_t y0, int16_t r,
     drawPixel(x0 - y, y0 - x, color);
   }
 }
-// Draw 1/4 circle outline : 1/4 Hinh_Tron 8 bit  
+
 void Adafruit_GFX::drawCircleHelper( int16_t x0, int16_t y0,
                int16_t r, uint8_t cornername, uint16_t color) {
   int16_t f     = 1 - r;
@@ -167,7 +167,7 @@ void Adafruit_GFX::drawCircleHelper( int16_t x0, int16_t y0,
     }
   }
 }
-// Hinh_Cau
+
 void Adafruit_GFX::fillCircle(int16_t x0, int16_t y0, int16_t r,
 			      uint16_t color) {
   drawFastVLine(x0, y0-r, 2*r+1, color);
@@ -177,11 +177,6 @@ void Adafruit_GFX::fillCircle(int16_t x0, int16_t y0, int16_t r,
 // Used to do circles and roundrects
 void Adafruit_GFX::fillCircleHelper(int16_t x0, int16_t y0, int16_t r,
     uint8_t cornername, int16_t delta, uint16_t color) {
-  
-  //xo, y0 : toa do diem ve
-  //r : ban kinh
-  //cornername : goc phan 4
-  //delta: do be goc
 
   int16_t f     = 1 - r;
   int16_t ddF_x = 1;
@@ -252,7 +247,7 @@ void Adafruit_GFX::drawLine(int16_t x0, int16_t y0,
   }
 }
 
-// Draw a rectangle : hinh_chu_nhat
+// Draw a rectangle
 void Adafruit_GFX::drawRect(int16_t x, int16_t y,
 			    int16_t w, int16_t h,
 			    uint16_t color) {
@@ -261,19 +256,19 @@ void Adafruit_GFX::drawRect(int16_t x, int16_t y,
   drawFastVLine(x, y, h, color);
   drawFastVLine(x+w-1, y, h, color);
 }
-// doan thang ngang
+
 void Adafruit_GFX::drawFastVLine(int16_t x, int16_t y,
 				 int16_t h, uint16_t color) {
   // Update in subclasses if desired!
   drawLine(x, y, x, y+h-1, color);
 }
-// doan thang doc
-void Adafruit_GFX::drawFastHLine(int16_t x, int16_t y,  // 
+
+void Adafruit_GFX::drawFastHLine(int16_t x, int16_t y,
 				 int16_t w, uint16_t color) {
   // Update in subclasses if desired!
   drawLine(x, y, x+w-1, y, color);
 }
-// hinh khoi chu nhat
+
 void Adafruit_GFX::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
 			    uint16_t color) {
   // Update in subclasses if desired!
@@ -281,12 +276,12 @@ void Adafruit_GFX::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
     drawFastVLine(i, y, h, color);
   }
 }
-// hien thi full mang hinh
+
 void Adafruit_GFX::fillScreen(uint16_t color) {
   fillRect(0, 0, _width, _height, color);
 }
 
-// Draw a rounded rectangle : hinh chu nhat co bo goc
+// Draw a rounded rectangle
 void Adafruit_GFX::drawRoundRect(int16_t x, int16_t y, int16_t w,
   int16_t h, int16_t r, uint16_t color) {
   // smarter version
@@ -301,7 +296,7 @@ void Adafruit_GFX::drawRoundRect(int16_t x, int16_t y, int16_t w,
   drawCircleHelper(x+r    , y+h-r-1, r, 8, color);
 }
 
-// Fill a rounded rectangle : hinh hop chu nhat co bo goc 
+// Fill a rounded rectangle
 void Adafruit_GFX::fillRoundRect(int16_t x, int16_t y, int16_t w,
 				 int16_t h, int16_t r, uint16_t color) {
   // smarter version
@@ -312,7 +307,7 @@ void Adafruit_GFX::fillRoundRect(int16_t x, int16_t y, int16_t w,
   fillCircleHelper(x+r    , y+r, r, 2, h-2*r-1, color);
 }
 
-// Draw a triangle : hinh tam giac
+// Draw a triangle
 void Adafruit_GFX::drawTriangle(int16_t x0, int16_t y0,
 				int16_t x1, int16_t y1,
 				int16_t x2, int16_t y2, uint16_t color) {
@@ -321,7 +316,7 @@ void Adafruit_GFX::drawTriangle(int16_t x0, int16_t y0,
   drawLine(x2, y2, x0, y0, color);
 }
 
-// Fill a triangle : hinh hop tam giac
+// Fill a triangle
 void Adafruit_GFX::fillTriangle ( int16_t x0, int16_t y0,
 				  int16_t x1, int16_t y1,
 				  int16_t x2, int16_t y2, uint16_t color) {
